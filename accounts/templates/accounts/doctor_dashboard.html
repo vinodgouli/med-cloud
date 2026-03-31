@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor Dashboard</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 700px;
+      background: #ffffffcc;
+      margin: 40px auto;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(102, 166, 255, 0.3);
+    }
+    h1 {
+      color: #4466ff;
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    p.logged-in {
+      text-align: center;
+      font-weight: 600;
+      color: #3a3a3a;
+      margin-bottom: 30px;
+    }
+    p.logged-in span {
+      color: #66a6ff;
+    }
+    a {
+      color: #4466ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #2244dd;
+      text-decoration: underline;
+    }
+    .btn {
+      display: inline-block;
+      background: #4466ff;
+      color: white;
+      padding: 10px 28px;
+      margin: 15px 0 30px 0;
+      border-radius: 8px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(68, 102, 255, 0.4);
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #2244dd;
+    }
+    h2 {
+      color: #334466;
+      border-bottom: 2px solid #89f7fe;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    ul.records-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul.records-list li {
+      background: #f5faff;
+      margin-bottom: 15px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    ul.records-list li a {
+      margin-left: 15px;
+      background: #66a6ff;
+      padding: 5px 18px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      color: white;
+      box-shadow: 0 5px 15px rgba(102, 166, 255, 0.3);
+    }
+    ul.records-list li a:hover {
+      background: #2244dd;
+    }
+    .no-records {
+      font-style: italic;
+      color: #666;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 1.1rem;
+    }
+    .logout-link {
+      text-align: center;
+      margin-top: 35px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, Dr. {{ request.user.username }}</h1>
+    <p class="logged-in">You are logged in as <span>Doctor</span>.</p>
+    <p style="text-align:center;">
+      <a href="{% url 'doctor_search' %}" class="btn">Search Patient Records by Keyword</a>
+    </p>
+
+    <h2>Assigned Patients' Medical Records</h2>
+    {% if records %}
+      <ul class="records-list">
+        {% for record in records %}
+          <li>
+            Patient: {{ record.patient.username }} | Uploaded: {{ record.uploaded_at|date:"Y-m-d" }}
+            <a href="{% url 'download_decrypted_file' record.id %}">Download Decrypted File</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-records">No records found.</p>
+    {% endif %}
+
+    <div class="logout-link">
+      <a href="{% url 'logout' %}" class="btn" style="background:#ff6666; box-shadow: 0 8px 20px rgba(255, 102, 102, 0.6);">Logout</a>
+    </div>
+  </div>
+</body>
+</html>

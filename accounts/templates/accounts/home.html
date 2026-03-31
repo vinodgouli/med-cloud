@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Medical Cloud</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #3a3a3a;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Ambient softly blurred circles */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      animation: float 10s ease-in-out infinite;
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .circle1 {
+      width: 280px; height: 280px;
+      top: 10%; left: 15%;
+      animation-delay: 0s;
+    }
+    .circle2 {
+      width: 350px; height: 350px;
+      bottom: 15%; right: 12%;
+      animation-delay: 5s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-15px) translateX(15px); }
+    }
+
+    main {
+      position: relative;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 30px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      padding: 50px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 45px;
+      z-index: 10;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      user-select: none;
+      margin-bottom: 5px;
+      color: #3a3a3a;
+      text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6);
+      font-style: normal;
+      text-transform: capitalize;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    nav a {
+      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+      color: #1a1a1a;
+      font-weight: 700;
+      padding: 16px 50px;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      box-shadow: 0 8px 20px rgba(102, 166, 255, 0.5);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transition: width 0.4s ease, height 0.4s ease;
+      z-index: -1;
+      transform: translate(-50%, -50%);
+    }
+
+    nav a:hover, nav a:focus {
+      background: linear-gradient(135deg, #66a6ff 0%, #89f7fe 100%);
+      box-shadow: 0 12px 40px rgba(102, 166, 255, 0.7);
+      transform: translateY(-4px);
+      outline: none;
+    }
+
+    nav a:active {
+      transform: scale(0.95);
+      box-shadow: 0 6px 15px rgba(102, 166, 255, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      main {
+        padding: 35px 25px;
+        max-width: 90vw;
+      }
+      h1 {
+        font-size: 2.8rem;
+      }
+      nav a {
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        flex: 1 1 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+  <main>
+    <h1>Welcome to Medical Cloud</h1>
+    <nav>
+      <a href="{% url 'patient_signup' %}" aria-label="Patient Signup">Patient Signup</a>
+      <a href="{% url 'doctor_signup' %}" aria-label="Doctor Signup">Doctor Signup</a>
+      <a href="{% url 'login' %}" aria-label="Login">Login</a>
+    </nav>
+  </main>
+</body>
+</html>

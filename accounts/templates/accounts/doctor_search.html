@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doctor Search</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      background: #ffffffcc;
+      margin: 50px auto;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(102, 166, 255, 0.3);
+    }
+    h1 {
+      color: #4466ff;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 25px;
+    }
+    form {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    form input[type="text"], form input[type="search"] {
+      width: 80%;
+      padding: 10px 15px;
+      border: 2px solid #66a6ff;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    form input[type="text"]:focus, form input[type="search"]:focus {
+      border-color: #2244dd;
+    }
+    form button {
+      background: #4466ff;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      margin-left: 15px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(68, 102, 255, 0.4);
+      transition: background-color 0.3s ease;
+    }
+    form button:hover {
+      background: #2244dd;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin-bottom: 25px;
+    }
+    h2 {
+      color: #334466;
+      border-bottom: 2px solid #89f7fe;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    ul.results-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul.results-list li {
+      background: #f5faff;
+      margin-bottom: 15px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      font-size: 1rem;
+      line-height: 1.4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    ul.results-list li a {
+      background: #66a6ff;
+      color: white;
+      padding: 6px 20px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      box-shadow: 0 5px 15px rgba(102, 166, 255, 0.3);
+      transition: background-color 0.3s ease;
+    }
+    ul.results-list li a:hover {
+      background: #2244dd;
+    }
+    p.no-results {
+      font-style: italic;
+      color: #666;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-top: 20px;
+    }
+    p.back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+    p.back-link a {
+      color: #4466ff;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    p.back-link a:hover {
+      color: #2244dd;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Search Patient Records</h1>
+
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
+    {% if results %}
+        <h2>Search Results</h2>
+        <ul class="results-list">
+        {% for record in results %}
+            <li>
+                Patient: {{ record.patient.username }} | Uploaded: {{ record.uploaded_at|date:"Y-m-d" }}
+                <a href="{% url 'download_decrypted_file' record.id %}">Download Decrypted File</a>
+        {% endfor %}
+        </ul>
+    {% elif form.is_bound %}
+        <p class="no-results">No records found for "{{ form.cleaned_data.keyword }}"</p>
+    {% endif %}
+
+    <p class="back-link"><a href="{% url 'doctor_dashboard' %}">Back to Dashboard</a></p>
+  </div>
+</body>
+</html>

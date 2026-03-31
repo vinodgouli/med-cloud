@@ -1,0 +1,9 @@
+Django==4.2.7
+djangorestframework
+django-storages
+boto3
+python-dotenv
+gunicorn
+psycopg2-binary
+cryptography
+pycryptodome

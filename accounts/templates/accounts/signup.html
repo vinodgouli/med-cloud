@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ user_type }} Signup</title></head>
+<body>
+    <h1>{{ user_type }} Signup</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Signup</button>
+    </form>
+    <a href="{% url 'home' %}">Home</a>
+</body>
+</html>

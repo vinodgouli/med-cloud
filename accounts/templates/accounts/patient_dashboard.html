@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard - Medical Cloud</title>
+    <style>
+        * { box-sizing: border-box; margin:0; padding:0; user-select:none; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #3a3a3a;
+        }
+        main {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 40px 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            text-align: center;
+        }
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom:10px; }
+        p { font-size: 1.2rem; margin-bottom:30px; color:#555; }
+
+        .upload-section, .doctors-section {
+            width: 100%;
+            background: rgba(240,240,240,0.8);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: left;
+        }
+
+        .upload-section h2, .doctors-section h2 { font-size:1.6rem; margin-bottom:15px; }
+
+        .upload-section form button {
+            background:#66a6ff; color:white; font-weight:700; padding:10px 30px;
+            border:none; border-radius:25px; cursor:pointer; transition: all 0.3s ease;
+        }
+        .upload-section form button:hover { background:#89f7fe; }
+
+        .doctors-list {
+            max-height:250px;
+            overflow-y:auto;
+            display:flex;
+            flex-direction:column;
+            gap:15px;
+        }
+
+        .doctor-card {
+            background:white;
+            padding:15px 20px;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+        }
+        .doctor-card h3 { margin-bottom:5px; font-size:1.2rem; }
+        .doctor-card p { font-size:0.95rem; color:#555; }
+
+        @media (max-width:480px) {
+            main { padding:30px 20px; }
+            h1 { font-size:2rem; }
+            .upload-section h2, .doctors-section h2 { font-size:1.3rem; }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Welcome, {{ request.user.username }}</h1>
+    <p>Access your medical records securely and assign doctors.</p>
+
+    <!-- Upload medical record & assign doctors -->
+    <section class="upload-section">
+        <h2>Upload Medical Record & Assign Doctors</h2>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_record' %}">
+            {% csrf_token %}
+            <!-- File input -->
+            <p>{{ form.file.label_tag }}<br>{{ form.file }}</p>
+            <!-- Keywords input -->
+            <p>{{ form.encrypted_keywords.label_tag }}<br>{{ form.encrypted_keywords }}</p>
+            <!-- Assign doctors -->
+            <h3>Assign to Doctors</h3>
+            <div style="max-height:200px; overflow-y:auto; border:1px solid #ccc; padding:10px; border-radius:10px;">
+                {{ form.assigned_doctors }}
+            </div>
+            <br>
+            <button type="submit">Upload & Assign</button>
+        </form>
+    </section>
+
+    <!-- Scrollable list of all registered doctors -->
+    <section class="doctors-section">
+        <h2>All Registered Doctors</h2>
+        <div class="doctors-list">
+            {% if doctors %}
+                {% for doctor in doctors %}
+                    <div class="doctor-card">
+                        <h3>Dr. {{ doctor.username }}</h3>
+                        <p>Email: {{ doctor.email }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No doctors registered.</p>
+            {% endif %}
+        </div>
+    </section>
+</main>
+</body>
+</html>
