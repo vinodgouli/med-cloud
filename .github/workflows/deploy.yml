@@ -30,10 +30,9 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          sudo docker stop medcloud || true
-          sudo docker rm medcloud || true
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/med-cloud-app
-          sudo docker run -d -p 8000:8000 \
+          docker rm -f medcloud || true
+          docker pull ${{ secrets.DOCKER_USERNAME }}/med-cloud-app
+          docker run -d -p 8000:8000 \
             -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
             -e DEBUG="False" \
             -e ALLOWED_HOSTS="*" \
